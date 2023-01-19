@@ -1,1 +1,1 @@
-# RabitLifeGame
+# RabbitLifeGame
