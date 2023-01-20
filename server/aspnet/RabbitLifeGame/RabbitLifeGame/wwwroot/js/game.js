@@ -77,17 +77,7 @@ function calcNextGeneration() {
             count += x < _countX - 1 ? _data[y][x + 1] : 0;
             count += y > 0 ? _data[y - 1][x] : 0;
             count += y < _countY - 1 ? _data[y + 1][x] : 0;
-            let next = 0;
-            if (_data[y][x] === 1) {
-                if (count === 2 || count === 3) {
-                    next = 1;
-                }
-            }
-            else {
-                if (count === 3) {
-                    next = 1;
-                }
-            }
+            const next = count === 3 || (_data[y][x] === 1 && count === 2) ? 1 : 0;
             buffer[y][x] = next;
         }
     }
