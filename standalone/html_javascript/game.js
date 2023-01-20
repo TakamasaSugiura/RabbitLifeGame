@@ -8,6 +8,7 @@ const _chipWidth = _defaultWidth / _countX;
 const _chipHeight = _defaultHeight / _countY;
 const _rabbitImageFile = "rabbit.png";
 const _rabbitImage = new Image();
+let _generation = 0;
 _rabbitImage.src = _rabbitImageFile;
 
 _ctx.canvas.width  = _defaultWidth;
@@ -87,6 +88,8 @@ function calcNextGeneration() {
 function drawNextGeneration() {
     calcNextGeneration();
     draw();
+    _generation++;
+    document.getElementById("generation").innerText = "世代:" + _generation.toString();
 }
 
 function getRandomInt(max) {
