@@ -3,3 +3,6 @@
 ################################################################################
 
 /server/aspnet/RabbitLifeGame/RabbitLifeGame/Properties/PublishProfiles/RabbitLifeGame - Web Deploy.pubxml
+/server/aspnet/RabbitLifeGame/RabbitLifeGame/Properties/PublishProfiles/RabbitLifeGame - Web Deploy.pubxml.user
+/server/aspnet/RabbitLifeGame/RabbitLifeGame/Properties/ServiceDependencies/RabbitLifeGame - Web Deploy/profile.arm.json
+/server/aspnet/RabbitLifeGame/RabbitLifeGame/RabbitLifeGame.csproj.user
