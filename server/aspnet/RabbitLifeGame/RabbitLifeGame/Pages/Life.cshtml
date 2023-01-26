@@ -1,15 +1,15 @@
 ﻿@page
 @model RabbitLifeGame.Pages.LifeModel
 @{
-		ViewData["Title"] = "life game";
+	ViewData["Title"] = "life game";
+	var bg = Model.Bg;
+	var birthCondition = string.Join(", ", Model.BirthCondition);
+	var liveCondition = string.Join(", ", Model.LiveCondition);
 	var baseColor = "linear-gradient(midnightblue, black)";
-	var fieldColor1 = "green";
-	var fieldColor2 = "seagreen";
-	if (!string.IsNullOrEmpty(Model.Bg))
+	var noRabbit = Model.NoRabbit;
+	if (!string.IsNullOrEmpty(bg))
 	{
 		baseColor = Model.Bg;
-		fieldColor1 = Model.Bg;
-		fieldColor2 = Model.Bg;
 	}
 }
 <style>
@@ -32,10 +32,16 @@
 	const _countY = 32;
 	const _chipWidth = _defaultWidth / _countX;
 	const _chipHeight = _defaultHeight / _countY;
+	const _liveCondition = [@liveCondition];
+	const _birthCondition = [@birthCondition];
+@if (!noRabbit)
+{
+	<text>
 	const _rabbitImageFile = "../image/rabbit.png";
 	const _rabbitImage = new Image();
 	_rabbitImage.src = _rabbitImageFile;
-
+	</text>
+}
 	_ctx.canvas.width = _defaultWidth;
 	_ctx.canvas.height = _defaultHeight;
 
@@ -45,15 +51,38 @@
 	}
 
 	function drawBackground() {
+	@if (string.IsNullOrEmpty(bg)) 
+	{
+		<text>
 		const gradient = _ctx.createLinearGradient(0, 0, _defaultWidth, _defaultHeight);
-		gradient.addColorStop(0, "@fieldColor1");
-		gradient.addColorStop(1, "@fieldColor2");
+		gradient.addColorStop(0, "green");
+		gradient.addColorStop(1, "seagreen");
 		_ctx.fillStyle = gradient;
-		_ctx.fillRect(0, 0, _defaultWidth, _defaultHeight);
+		</text>
+	}
+	else
+	{
+		<text>
+		_ctx.fillStyle = "@bg";
+		</text>
+	}
+	_ctx.fillRect(0, 0, _defaultWidth, _defaultHeight);
 	}
 
 	function drawRabbit(x, y) {
+	@if (!noRabbit)
+	{
+		<text>
 		_ctx.drawImage(_rabbitImage, x * _chipWidth, y * _chipHeight, _chipWidth, _chipHeight);
+		</text>
+	}
+	else
+	{
+		<text>
+		_ctx.fillStyle = "white";
+		_ctx.fillRect(x * _chipWidth, y * _chipHeight, _chipWidth, _chipHeight);
+		</text>
+	}
 	}
 
 	function resize() {
@@ -103,7 +132,9 @@
 				count += x < _countX - 1 ? _data[y][x + 1] : 0;
 				count += y > 0 ? _data[y - 1][x] : 0;
 				count += y < _countY - 1 ? _data[y + 1][x] : 0;
-				const next = count === 3 || (_data[y][x] === 1 && count === 2) ? 1 : 0;
+				const next = 
+					(_data[y][x] === 0 && _birthCondition.includes(count))
+					|| (_data[y][x] === 1 && _liveCondition.includes(count)) ? 1 : 0;
 				buffer[y][x] = next;
 			}
 		}
