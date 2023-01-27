@@ -28,8 +28,8 @@
 	const _ctx = _canvas.getContext("2d");
 	const _defaultWidth = window.innerWidth;
 	const _defaultHeight = window.innerHeight;
-	const _countX = 32;
-	const _countY = 32;
+	const _countX = @Model.CountX;
+	const _countY = @Model.CountY;
 	const _chipWidth = _defaultWidth / _countX;
 	const _chipHeight = _defaultHeight / _countY;
 	const _liveCondition = [@liveCondition];
@@ -164,4 +164,3 @@
 
 	window.setInterval(drawNextGeneration, 1000);
 </script>
-}

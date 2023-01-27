@@ -12,6 +12,8 @@ public class LifeModel : PageModel
 
     public int[] BirthCondition { get; private set; } = new int[] { 3 };
     public int[] LiveCondition { get; private set; } = new int[] { 2, 3 };
+    public int CountX { get; private set; } = 32;
+    public int CountY { get; private set; } = 32;
 
     public LifeModel(ILogger<LifeModel> logger)
     {
@@ -37,6 +39,14 @@ public class LifeModel : PageModel
             }
             catch { }
         }
+        if (16 <= getRequest.CntX && getRequest.CntX <= 400)
+        {
+            CountX = getRequest.CntX;
+        }
+        if (16 <= getRequest.CntY && getRequest.CntY <= 400)
+        {
+            CountY = getRequest.CntY;
+        }
     }
 
     [BindProperties]
@@ -45,5 +55,7 @@ public class LifeModel : PageModel
         public string Rule { get; set; } = string.Empty;
         public string Bg { get; set; } = string.Empty;
         public bool NoRabbit { get; set; } = false;
+        public int CntX { get; set; } = 32;
+        public int CntY { get; set; } = 32;
     }
 }
