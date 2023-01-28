@@ -24,6 +24,7 @@ public class LifeModel : PageModel
     public void OnGet(GetRequest getRequest)
     {
         Bg = getRequest.Bg;
+        Fg = getRequest.Fg;
         NoRabbit = getRequest.NoRabbit;
         if (!string.IsNullOrEmpty(getRequest.Rule))
         {
