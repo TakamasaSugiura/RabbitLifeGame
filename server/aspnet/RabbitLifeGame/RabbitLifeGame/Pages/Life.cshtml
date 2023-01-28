@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "life game";
 	var bg = Model.Bg;
+	var fg = Model.Fg;
 	var birthCondition = string.Join(", ", Model.BirthCondition);
 	var liveCondition = string.Join(", ", Model.LiveCondition);
 	var baseColor = "linear-gradient(midnightblue, black)";
@@ -79,7 +80,7 @@
 	else
 	{
 		<text>
-		_ctx.fillStyle = "white";
+		_ctx.fillStyle = "@fg";
 		_ctx.fillRect(x * _chipWidth, y * _chipHeight, _chipWidth, _chipHeight);
 		</text>
 	}

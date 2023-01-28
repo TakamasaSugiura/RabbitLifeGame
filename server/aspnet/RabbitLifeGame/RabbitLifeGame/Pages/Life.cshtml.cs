@@ -8,6 +8,7 @@ public class LifeModel : PageModel
     private readonly ILogger<LifeModel> _logger;
 
     public string Bg { get; private set; } = string.Empty;
+    public string Fg { get; private set; } = "white";
     public bool NoRabbit { get; private set; } = false;
 
     public int[] BirthCondition { get; private set; } = new int[] { 3 };
@@ -54,6 +55,7 @@ public class LifeModel : PageModel
     {
         public string Rule { get; set; } = string.Empty;
         public string Bg { get; set; } = string.Empty;
+        public string Fg { get; set; } = "white";
         public bool NoRabbit { get; set; } = false;
         public int CntX { get; set; } = 32;
         public int CntY { get; set; } = 32;
