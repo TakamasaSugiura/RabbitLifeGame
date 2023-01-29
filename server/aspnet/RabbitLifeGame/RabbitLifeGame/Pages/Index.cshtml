@@ -4,18 +4,22 @@
 	ViewData["Title"] = "index";
 }
 <style>
-	div {
-		border: solid black;
+	div.card {
+		border: solid thin;
+		border-color: orange;
+		border-radius: 10px;
+		border-left-width: 15px;
 		padding: 1em;
 		margin: 1em;
-		border-right: none;
-		border-bottom: none;
+		background: linear-gradient(to right, lemonchiffon, white);
+	}
+	div.card h2 {
+		margin-top: 0;
 	}
 </style>
 <h1>兎のライフゲーム ほか</h1>
-<div>
+<div class="card">
 	<h2>ライフゲーム</h2>
-	<h3>入り口</h3>
 	<ul>
 		<li><a href="life">ノーマル</a></li>
 		<li><a href="life?norabbit=true">兎なし</a></li>
@@ -33,9 +37,8 @@
 		<li>cnty: 縦方向の個数(16～400)</li>
 	</ul>
 </div>
-<div>
+<div class="card">
 	<h2>乱数表</h2>
-	<h3>入り口</h3>
 	<ul>
 		<li><a href="rand">ノーマル</a></li>
 		<li><a href="rand?hex=true">16進</a></li>
