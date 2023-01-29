@@ -16,19 +16,20 @@ public class LifeModel : PageModel
     public int CountX { get; private set; } = 32;
     public int CountY { get; private set; } = 32;
 
+
     public LifeModel(ILogger<LifeModel> logger)
     {
         _logger = logger;
     }
 
-    public void OnGet(GetRequest getRequest)
+    public void OnGet(GetRequest request)
     {
-        Bg = getRequest.Bg;
-        Fg = getRequest.Fg;
-        NoRabbit = getRequest.NoRabbit;
-        if (!string.IsNullOrEmpty(getRequest.Rule))
+        Bg = request.Bg;
+        Fg = request.Fg;
+        NoRabbit = request.NoRabbit;
+        if (!string.IsNullOrEmpty(request.Rule))
         {
-            var splited = getRequest.Rule.Split("_");
+            var splited = request.Rule.Split("_");
             try
             {
                 if (splited.Length == 2)
@@ -41,13 +42,13 @@ public class LifeModel : PageModel
             }
             catch { }
         }
-        if (16 <= getRequest.CntX && getRequest.CntX <= 400)
+        if (16 <= request.CntX && request.CntX <= 400)
         {
-            CountX = getRequest.CntX;
+            CountX = request.CntX;
         }
-        if (16 <= getRequest.CntY && getRequest.CntY <= 400)
+        if (16 <= request.CntY && request.CntY <= 400)
         {
-            CountY = getRequest.CntY;
+            CountY = request.CntY;
         }
     }
 

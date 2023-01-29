@@ -1,0 +1,22 @@
+﻿@page
+@model RabbitLifeGame.Pages.RandModel
+<table>
+	<tbody>
+		@for (var row = 0; row < Model.Rows; row++)
+		{
+			<tr>
+				@for (var col = 0; col < Model.Cols; col++)
+				{
+					@if (Model.Hex)
+					{
+						<td>@Random.Shared.Next(Model.Min, Model.Max + 1).ToString(Model.Zpad ? $"X{Model.Pad}" : "X")</td>
+					}
+					else
+					{
+						<td>@Random.Shared.Next(Model.Min, Model.Max + 1).ToString(Model.Zpad ? $"D{Model.Pad}" : "D")</td>
+					}
+				}
+			</tr>
+		}
+	</tbody>
+</table>
