@@ -30,11 +30,11 @@ public class RandModel : PageModel
             Max = Min;
             Min = tmp;
         }
-        if (1 <= request.Cols && request.Cols <= 100)
+        if (request.Cols is >= 1 and <= 100)
         {
             Cols = request.Cols;
         }
-        if (1 <= request.Rows && request.Rows <= 100)
+        if (request.Rows is >= 1 and <= 100)
         {
             Rows = request.Rows;
         }

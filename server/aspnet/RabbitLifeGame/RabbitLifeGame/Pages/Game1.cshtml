@@ -2,3 +2,185 @@
 @model RabbitLifeGame.Pages.Game1Model
 @{
 }
+<style>
+	body {
+		text-align: center;
+	}
+	canvas {
+		margin: 10px;
+	}
+</style>
+<canvas id="canvas"></canvas>
+<script>
+	const _canvas = document.getElementById("canvas");
+	const _ctx = _canvas.getContext("2d");
+	const _defaultWidth = window.innerWidth;
+	const _defaultHeight = window.innerHeight;
+	const _size = 3;
+	const _cellWidth = _defaultWidth / _size;
+	const _cellHeight = _defaultHeight / _size;
+	const _fontSize = _defaultWidth / 20;
+	let _startTime = new Date();
+	let _endFlag = false;
+	let _startFlag = false;
+
+	// init data array
+	const _data = new Array(_size);
+	for (let i = 0; i < _data.length; i++) {
+		_data[i] = new Array(_size);
+	}
+	for (let y = 0; y < _size; y++) {
+		for (let x = 0; x < _size; x++) {
+			_data[y][x] = 0;
+		}
+	}
+
+	_ctx.canvas.width = _defaultWidth;
+	_ctx.canvas.height = _defaultHeight;
+
+	function drawGame() {
+		_ctx.fillStyle = "white";
+		_ctx.fillRect(0, 0, _defaultWidth, _defaultHeight);
+
+		const gradient = _ctx.createLinearGradient(0, 0, _defaultWidth, _defaultHeight);
+		gradient.addColorStop(0, "lavender");
+		gradient.addColorStop(1, "darkslateblue");
+
+		for (let y = 0; y < _size; y++) {
+			for (let x = 0; x < _size; x++) {
+				if (_data[y][x] === 0) {
+					_ctx.fillStyle = "black";
+				}
+				else {
+					_ctx.fillStyle = gradient;
+				}
+				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
+			}
+		}
+	}
+
+	function resize() {
+		const [actualWidth, actualHeight] = calcActualSize();
+
+		_canvas.style.width = actualWidth + 'px';
+		_canvas.style.height = actualHeight + 'px';
+	};
+
+	function calcActualSize() {
+		const canvasRatio = 1080 / 1920;
+		const windowRatio = window.innerHeight / window.innerWidth;
+		let width;
+		let height;
+
+		if (windowRatio < canvasRatio) {
+			height = window.innerHeight;
+			width = height / canvasRatio;
+		} else {
+			width = window.innerWidth;
+			height = width * canvasRatio;
+		}
+		return [width * 0.9, height * 0.9];
+	}
+
+	function onClick(event) {
+		if (!_startFlag) {
+			startGame()
+			return;
+		}
+		if (_endFlag) {
+			return;
+		}
+		const x = event.offsetX;
+		const y = event.offsetY;
+		const [actualWidth, actualHeight] = calcActualSize();
+		const actualCellWidth = actualWidth / _size;
+		const actualCellHeight = actualHeight / _size;
+		const xPos = Math.floor(x / actualCellWidth);
+		const yPos = Math.floor(y / actualCellHeight);
+		update(xPos, yPos);
+		drawGame();
+		if (checkEndGame()) {
+			endGame();
+		}
+	}
+
+	function update(xPos, yPos) {
+		_data[yPos][xPos] = 1 - _data[yPos][xPos];
+		if (xPos > 0) {
+			_data[yPos][xPos - 1] = 1 - _data[yPos][xPos - 1];
+		}
+		if (yPos > 0) {
+			_data[yPos - 1][xPos] = 1 - _data[yPos - 1][xPos];
+		}
+		if (xPos < _size - 1) {
+			_data[yPos][xPos + 1] = 1 - _data[yPos][xPos + 1];
+		}
+		if (yPos < _size - 1) {
+			_data[yPos + 1][xPos] = 1 - _data[yPos + 1][xPos];
+		}
+	}
+
+	function checkEndGame() {
+		for (let y = 0; y < _size; y++) {
+			for (let x = 0; x < _size; x++) {
+				if (_data[y][x] === 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	function initGame() {
+		for (let y = 0; y < _size; y++) {
+			for (let x = 0; x < _size; x++) {
+				_ctx.fillStyle = "whitesmoke";
+				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
+			}
+		}
+		_ctx.font = _fontSize + "px sans";
+		_ctx.fillStyle = "orangered";
+		_ctx.textAlign = 'center';
+		_ctx.fillText("Click here to start", _defaultWidth / 2, _defaultHeight / 2);
+	}
+	
+	function startGame() {
+		_startFlag = true;
+		for (let i = 0; i < _size; i ++) {
+			const x = getRandomInt(_size);
+			const y = getRandomInt(_size);
+			update(x, y);
+		}
+		drawGame();
+		_startTime = new Date();
+	}
+
+	function endGame() {
+		const endTime = new Date();
+		const diff = (endTime - _startTime) / 1000 + " sec.";
+		const [actualWidth, actualHeight] = calcActualSize();
+		for (let y = 0; y < _size; y++) {
+			for (let x = 0; x < _size; x++) {
+				_ctx.fillStyle = "lavender";
+				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
+				_data[y][x] = 0;
+			}
+		}
+		_ctx.font = _fontSize + "px sans";
+		_ctx.fillStyle = "midnightblue";
+		_ctx.textAlign = 'center';
+		_ctx.fillText(diff, _defaultWidth / 2, _defaultHeight / 2);
+		_ctx.fillText("Click here to restart", _defaultWidth / 2, _defaultHeight / 2 + 100);
+		_startFlag = false;
+	}
+
+	function getRandomInt(max) {
+		return Math.floor(Math.random() * max);
+	}
+
+	window.addEventListener('resize', resize, false);
+	_canvas.addEventListener('click', onClick, false);
+	initGame();
+	resize();
+
+</script>
