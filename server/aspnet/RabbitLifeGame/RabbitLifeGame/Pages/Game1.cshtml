@@ -48,16 +48,40 @@
 		gradient.addColorStop(0, "@Model.C3");
 		gradient.addColorStop(1, "@Model.C4");
 
+		let count = 0;
 		for (let y = 0; y < _size; y++) {
 			for (let x = 0; x < _size; x++) {
+				@if(Model.ExMode)
+				{
+				<text>
+					_ctx.fillStyle = "@Model.C1";
+					if (_data[y][x] === 1) {
+						count += 1;
+					}
+				</text>
+				}
+				else
+				{
+				<text>
 				if (_data[y][x] === 0) {
 					_ctx.fillStyle = "@Model.C1";
 				}
 				else {
 					_ctx.fillStyle = gradient;
 				}
+				</text>
+				}
 				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
 			}
+		}
+		@if(Model.ExMode)
+		{
+		<text>
+			_ctx.font = "121px sans";
+			_ctx.fillStyle = "@Model.Tc1";
+			_ctx.textAlign = 'center';
+			_ctx.fillText(count.toString(), _defaultWidth / 2, _defaultHeight / 2);
+		</text>
 		}
 	}
 

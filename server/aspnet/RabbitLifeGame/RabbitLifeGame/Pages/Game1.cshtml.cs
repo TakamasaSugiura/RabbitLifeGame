@@ -15,7 +15,7 @@ public class Game1Model : PageModel
     public string C4 { get; private set; } = "darkslateblue";
     public string Tc1 { get; private set; } = "orangered";
     public string Tc2 { get; private set; } = "midnightblue";
-
+    public bool ExMode { get; private set; } = false;
 
     public void OnGet(GetRequest request)
     {
@@ -34,6 +34,11 @@ public class Game1Model : PageModel
         C4 = request.C4;
         Tc1 = request.Tc1;
         Tc2 = request.Tc2;
+        if(!bool.TryParse(request.Ex, out var exMode))
+        {
+            exMode = false;
+        }
+        ExMode = exMode;
     }
 
     [BindProperties]
@@ -48,5 +53,6 @@ public class Game1Model : PageModel
         public string C4 { get; set; } = "darkslateblue";
         public string Tc1 { get; set; } = "orangered";
         public string Tc2 { get; set; } = "midnightblue";
+        public string Ex { get; set; } = false.ToString();
     }
 }
