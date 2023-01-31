@@ -5,6 +5,7 @@
 }
 <style>
 	body {
+		background: @Model.Bg;
 		text-align: center;
 	}
 	canvas {
@@ -16,7 +17,7 @@
 	const _canvas = document.getElementById("canvas");
 	const _ctx = _canvas.getContext("2d");
 	const _defaultWidth = 1920;
-	const _defaultHeight = 1080;
+	const _defaultHeight = 1920;
 	const _size = @Model.Size;
 	const _cellWidth = _defaultWidth / _size;
 	const _cellHeight = _defaultHeight / _size;
@@ -40,17 +41,17 @@
 	_ctx.canvas.height = _defaultHeight;
 
 	function drawGame() {
-		_ctx.fillStyle = "white";
+		_ctx.fillStyle = "@Model.Bg";
 		_ctx.fillRect(0, 0, _defaultWidth, _defaultHeight);
 
 		const gradient = _ctx.createLinearGradient(0, 0, _defaultWidth, _defaultHeight);
-		gradient.addColorStop(0, "lavender");
-		gradient.addColorStop(1, "darkslateblue");
+		gradient.addColorStop(0, "@Model.C3");
+		gradient.addColorStop(1, "@Model.C4");
 
 		for (let y = 0; y < _size; y++) {
 			for (let x = 0; x < _size; x++) {
 				if (_data[y][x] === 0) {
-					_ctx.fillStyle = "black";
+					_ctx.fillStyle = "@Model.C1";
 				}
 				else {
 					_ctx.fillStyle = gradient;
@@ -68,7 +69,7 @@
 	};
 
 	function calcActualSize() {
-		const canvasRatio = 1080 / 1920;
+		const canvasRatio = _defaultHeight / _defaultWidth;
 		const windowRatio = window.innerHeight / window.innerWidth;
 		let width;
 		let height;
@@ -135,12 +136,12 @@
 	function initGame() {
 		for (let y = 0; y < _size; y++) {
 			for (let x = 0; x < _size; x++) {
-				_ctx.fillStyle = "whitesmoke";
+				_ctx.fillStyle = "@Model.C2";
 				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
 			}
 		}
-		_ctx.font = _fontSize + "px sans";
-		_ctx.fillStyle = "orangered";
+		_ctx.font = "121px sans";
+		_ctx.fillStyle = "@Model.Tc1";
 		_ctx.textAlign = 'center';
 		_ctx.fillText("Click here to start", _defaultWidth / 2, _defaultHeight / 2);
 	}
@@ -162,16 +163,16 @@
 		const [actualWidth, actualHeight] = calcActualSize();
 		for (let y = 0; y < _size; y++) {
 			for (let x = 0; x < _size; x++) {
-				_ctx.fillStyle = "lavender";
+				_ctx.fillStyle = "@Model.C3";
 				_ctx.fillRect((x * _cellWidth) + 5, (y * _cellHeight) + 5, _cellWidth - 5, _cellHeight - 5);
 				_data[y][x] = 0;
 			}
 		}
-		_ctx.font = _fontSize + "px sans";
-		_ctx.fillStyle = "midnightblue";
+		_ctx.font = "121px sans";
+		_ctx.fillStyle = "@Model.Tc2";
 		_ctx.textAlign = 'center';
 		_ctx.fillText(diff, _defaultWidth / 2, _defaultHeight / 2);
-		_ctx.fillText("Click here to restart", _defaultWidth / 2, _defaultHeight / 2 + 100);
+		_ctx.fillText("Click here to restart", _defaultWidth / 2, _defaultHeight / 2 + 140);
 		_startFlag = false;
 	}
 
