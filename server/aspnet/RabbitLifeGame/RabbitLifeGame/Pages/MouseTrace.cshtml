@@ -1,0 +1,63 @@
+﻿@page
+@model RabbitLifeGame.Pages.MouseTraceModel
+@{
+	ViewData["Title"] = "mouse trace";
+}
+
+<style>
+	canvas {
+		border: solid;
+	}
+</style>
+
+<canvas id="canvas" width="320" , height="240"></canvas>
+<canvas id="copy" width="320" , height="240"></canvas>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script>
+	const _connection = new signalR.HubConnectionBuilder().withUrl("/mouseTraceHub").build();
+	_connection.start();
+
+	const _canvas = document.getElementById("canvas");
+	const _ctx = _canvas.getContext("2d");
+
+	const _copiedCanvas = document.getElementById("copy");
+	const _copiedCtx = _copiedCanvas.getContext("2d");
+
+	function onMouseMove(event) {
+		const x = event.offsetX;
+		const y = event.offsetY;
+		_ctx.fillStyle = "#FFFFFF11";
+		_ctx.fillRect(0, 0, 320, 240);
+		//_ctx.clearRect(0, 0, 640, 480);
+		_ctx.beginPath();
+		_ctx.fillStyle = "black";
+		_ctx.ellipse(x, y, 20, 20, 0, 0, 2 * Math.PI);
+		_ctx.fill();
+		_connection.invoke("MouseMoveCommand", { x: x, y: y }).catch(function (err) {
+			return console.error(err.toString());
+		});
+	}
+
+	function mouseMoveCallback(parameter) {
+		const x = parameter.x;
+		const y = parameter.y;
+		_copiedCtx.fillStyle = "#FFFFFF11";
+		_copiedCtx.fillRect(0, 0, 320, 240);
+		//_copiedCtx.clearRect(0, 0, 640, 480);
+		_copiedCtx.beginPath();
+		_copiedCtx.fillStyle = "red";
+		_copiedCtx.ellipse(x, y, 20, 20, 0, 0, 2 * Math.PI);
+		_copiedCtx.fill();
+	}
+
+	_canvas.addEventListener("mousemove", onMouseMove);
+
+
+	_connection.on("MouseMoveMessage", function (message) {
+		if (mouseMoveCallback) {
+			mouseMoveCallback(message);
+		}
+		//let v = document.getElementById("result");
+		//v.innerText = message.id; //JSON.stringify(message);
+	});
+</script>
